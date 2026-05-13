@@ -1,28 +1,28 @@
 public abstract class Card {
     private String cardName;
-    private int price;
+    private boolean isAvailable;
 
     protected Card(){
 
     }
-    protected Card(String cardName, int price) {
+    protected Card(String cardName) {
         this.cardName = cardName;
-        this.price = price;
-    }
-
-    public int getPrice() {
-        return price;
+        this.isAvailable = true;
     }
 
     public String getCardName() {
         return cardName;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
     }
 
     public abstract String toString();
 
-    public abstract int playCard() throws InsufficientCardException;
+    public abstract int playCard() throws UnavailableCardException;
 }
