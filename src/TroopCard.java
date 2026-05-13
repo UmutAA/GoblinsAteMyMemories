@@ -26,7 +26,10 @@ public abstract class TroopCard extends Card {
     }
 
     public void takeDamage(int damage){
-        this.setHealth(this.getHealth() - damage);
+        health -= damage;
+        if (health <= 0) {
+            health = 0;
+        }
     }
 
     public abstract boolean equals(TroopCard target);

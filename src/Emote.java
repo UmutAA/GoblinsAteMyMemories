@@ -24,6 +24,6 @@ public class Emote implements Buyable{
     }
 
     public void buy(Player target) throws InsufficientMoneyException {
-
+    //TODO
     }
 }

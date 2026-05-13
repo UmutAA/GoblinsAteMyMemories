@@ -21,7 +21,7 @@ public class MeleeCard extends TroopCard{
             throw new UnavailableCardException("This card has been already played!");
         }
         else{
-            //burayi sonra yapak
+            //TODO
         }
     }
 
@@ -33,6 +33,6 @@ public class MeleeCard extends TroopCard{
 
     @Override
     public boolean equals(TroopCard target){
-
+    //TODO
     }
 }

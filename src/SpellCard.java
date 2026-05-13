@@ -38,7 +38,7 @@ public class SpellCard extends Card implements Buyable{
             throw new UnavailableCardException("This card has been already played!");
         }
         else{
-            //burayi sonra yapak
+            //TODO
             return 0;
         }
     }

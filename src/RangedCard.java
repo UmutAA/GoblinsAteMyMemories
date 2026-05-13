@@ -21,7 +21,7 @@ public class RangedCard extends TroopCard {
             throw new UnavailableCardException("This card has been already played!");
         }
         else{
-            //burayi sonra yapak
+            //TODO
             return 0;
         }
     }
@@ -34,6 +34,6 @@ public class RangedCard extends TroopCard {
 
     @Override
     public boolean equals(TroopCard target){
-
+        //TODO
     }
 }
