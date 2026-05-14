@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public abstract class Enemy extends Character{
-    private ArrayList<String> quoteList;
+    protected ArrayList<String> quoteList;
 
     protected Enemy(){
 
