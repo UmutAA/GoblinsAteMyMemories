@@ -1,2 +1,3 @@
-public interface Cloneable {
+public interface Cloneable<T> {
+    public T clone();
 }

@@ -4,7 +4,6 @@ import java.util.Timer;
 import java.util.Random;
 import java.util.TimerTask;
 
-
 public class Boss extends Enemy implements Talkative{
     private int healtCoef;
     private int powerCoef;
@@ -54,6 +53,6 @@ public class Boss extends Enemy implements Talkative{
                 }
             }
         };
-        timer.scheduleAtFixedRate(task, 0, 5000); //5 saniyede 1
+        timer.scheduleAtFixedRate(task, 0, 5000); // Every 5 seconds
     }
 }

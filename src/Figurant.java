@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Figurant extends Enemy implements Cloneable{
+public class Figurant extends Enemy implements Cloneable<Figurant>{
     private boolean isAggressive;
 
     public Figurant(){}
@@ -32,10 +32,11 @@ public class Figurant extends Enemy implements Cloneable{
     }
 
     @Override
-    public Object clone(){
-
-        //TODO
-        return null;
+    public Figurant clone(){
+        ArrayList<Card> cards = new ArrayList<Card>(super.getCardList());
+        ArrayList<String> quotes = new ArrayList<String>(super.getQuoteList());
+        return new Figurant(getName(), super.getHealth(), super.getPower(),
+                cards, quotes, this.isAggressive());
     }
 
 

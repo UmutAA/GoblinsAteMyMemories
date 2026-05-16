@@ -12,5 +12,9 @@ public abstract class Enemy extends Character{
         this.quoteList = quoteList;
     }
 
+    public ArrayList<String> getQuoteList(){
+        return quoteList;
+    }
+
     public abstract void getReward(Player target);
 }
