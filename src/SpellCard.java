@@ -38,22 +38,39 @@ public class SpellCard extends Card implements Buyable{
             throw new UnavailableCardException("This card has been already played!");
         }
         else{
-            //TODO
-            return 0;
+            return this.getDamage();
         }
     }
 
     @Override
-    public void buy(Player target) throws InsufficientMoneyException{
+    public void buy(Player target) throws InsufficientMoneyException, DuplicateException {
         if(target.getGem() < this.getPrice()){
             throw new InsufficientMoneyException("To purchase this spell, you need to have "
                 +  (this.getPrice() - target.getGem()) + " more gems!");
         }
+        else if(target.getCardList().contains(this)){
+            throw new DuplicateException("You already own this card!");
+        }
         else{
-            target.addCard(this);
-            target.setGem(target.getGem() - this.getPrice());
-            super.setAvailable(true);
+            System.out.println("Buying Spell...");
         }
     }
 
+    public boolean equals(Object obj){
+        if (obj instanceof SpellCard card)
+        {
+            if (this == obj)
+            {
+                return true;
+            }
+
+            else
+            {
+                return (getCardName().equals(card.getCardName()) && getDamage() == card.getDamage());
+            }
+        }
+        else{
+            return false;
+        }
+    }
 }

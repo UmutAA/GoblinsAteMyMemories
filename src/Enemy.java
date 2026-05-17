@@ -16,5 +16,11 @@ public abstract class Enemy extends Character{
         return quoteList;
     }
 
+    public void addQuote(String quote){
+        if (!quoteList.contains(quote)){
+            quoteList.add(quote);
+        }
+    }
+
     public abstract void getReward(Player target);
 }

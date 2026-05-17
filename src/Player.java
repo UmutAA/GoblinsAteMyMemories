@@ -15,6 +15,8 @@ public class Player extends Character implements Talkative{
         this.emoteList = new ArrayList<Emote>();
     }
 
+    public ArrayList<Emote> getEmoteList() {return this.emoteList;}
+
     public int getGem() {
         return gem;
     }
@@ -28,9 +30,31 @@ public class Player extends Character implements Talkative{
         }
     }
 
-    public int attack(){
+    public int attack() {
         int damage = 0;
-        return damage;
+        System.out.println("Your Deck: ");
+        for (int i = 0; i < this.getCardList().size(); i++) {
+            System.out.printf("%d) %s\n", i + 1, getCardList().get(i).toString());
+        }
+        boolean played = false;
+        while (!played){
+            System.out.print("Choose your card: ");
+            Scanner scanner = new Scanner(System.in);
+            int choice = scanner.nextInt();
+            try {
+                damage = getCardList().get(choice - 1).playCard();
+                played = true;
+            } catch (UnavailableCardException e) {
+                System.out.println("Can't play this card: " + e.getMessage());
+                System.out.println("Please play an available card!");
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Can't play this card: Invalid card number!");
+                System.out.println("Please play an invalid card!");
+            } catch (Exception e){
+                System.out.println("Can't play this card: " +  e.getMessage());
+            }
+        }
+        return (damage * this.getPower());
     }
 
     @Override
@@ -50,24 +74,102 @@ public class Player extends Character implements Talkative{
     }
 
     public boolean addCard(Card card){
-        if (getCardList().contains(card)){
-            System.out.println("Card already exists");
-            return false;
+        if (card instanceof SpellCard c){
+            try{
+                c.buy(this);
+                this.getCardList().add(c);
+                this.setGem(this.getGem() - c.getPrice());
+                System.out.println("Card bought successfully");
+                return true;
+            } catch (InsufficientMoneyException e) {
+                System.out.println("Insufficient Money. " + e.getMessage());
+                System.out.println("Purchase failed.");
+                return false;
+            }
+            catch (DuplicateException e) {
+                System.out.println(e.getMessage());
+                System.out.println("Purchase failed.");
+                return false;
+            }
+
+            catch (NullPointerException e) {
+                System.out.println("No such card exists!");
+                System.out.println("Purchase failed.");
+                return false;
+            }
         }
+
         else{
-            getCardList().add(card);
-            return true;
+            if (getCardList().contains(card)){
+                System.out.println("You already own this card!");
+                return false;
+            }
+
+            else{
+                System.out.println("You earned a new card: " + card.toString());
+                return true;
+            }
         }
     }
 
     public boolean addEmote(Emote emote){
-        if (emoteList.contains(emote)){
-            System.out.println("Emote already exists");
+        try{
+            emote.buy(this);
+            this.getEmoteList().add(emote);
+            this.setGem(this.getGem() - emote.getPrice());
+            System.out.println("Emote bought successfully");
+            return true;
+        } catch (InsufficientMoneyException e) {
+            System.out.println("Insufficient Money. " + e.getMessage());
+            System.out.println("Purchase failed.");
             return false;
         }
-        else{
-            emoteList.add(emote);
-            return true;
+        catch (DuplicateException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Purchase failed.");
+            return false;
+        } catch (NullPointerException e) {
+            System.out.println("No such emote exists!");
+            System.out.println("Purchase failed.");
+            return false;
         }
+    }
+
+    public void showInventory(){
+        System.out.println("======================");
+        System.out.println(getName() + "'s Inventory:");
+        System.out.println("Health: " + getHealth() + " Power: " + getPower());
+        System.out.println("Gems: " + getGem());
+        System.out.println("Cards: " + getCardList().size());
+        System.out.println("Emotes: " + emoteList.size());
+        System.out.println("(0) Close inventory.");
+        System.out.println("(1) See all cards.");
+        System.out.println("(2) See all emotes.");
+        int choice = 1;
+        while (choice != 0)
+        {
+            System.out.print("Your choice: ");
+            Scanner scanner = new Scanner(System.in);
+            choice = scanner.nextInt();
+            switch (choice) {
+                case 0:
+                    break;
+
+                case 1:
+                    for (Card card : getCardList()) {
+                        System.out.println(card.toString());
+                    }
+                    break;
+                case 2:
+                    for (Emote emote: this.emoteList) {
+                        System.out.println(emote.toString());
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
+        }
+        System.out.println("======================");
     }
 }

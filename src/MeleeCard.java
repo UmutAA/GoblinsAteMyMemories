@@ -21,7 +21,7 @@ public class MeleeCard extends TroopCard{
             throw new UnavailableCardException("This card has been already played!");
         }
         else{
-            //TODO
+            return this.getPower() * this.getSpeed() / 10;
         }
     }
 
@@ -32,7 +32,22 @@ public class MeleeCard extends TroopCard{
     }
 
     @Override
-    public boolean equals(TroopCard target){
-    //TODO
+    public boolean equals(Object obj){
+        if (obj instanceof MeleeCard card)
+        {
+            if (this == obj)
+            {
+                return true;
+            }
+
+            else
+            {
+                return (getCardName().equals(card.getCardName()) && getHealth() == card.getHealth()
+                        && getSpeed() == card.getSpeed() && getPower() == card.getPower());
+            }
+        }
+        else{
+            return false;
+        }
     }
 }

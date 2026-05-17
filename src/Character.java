@@ -34,7 +34,9 @@ public abstract class Character {
     }
 
     public void setHealth(int health) {
-        this.health = health;
+        if (health > 0 && health <= 100) {
+            this.health = health;
+        }
     }
 
     public void setPower(int power) {

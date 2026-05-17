@@ -1,4 +1,4 @@
-public abstract class Card {
+public abstract class Card{
     private String cardName;
     private boolean isAvailable;
 

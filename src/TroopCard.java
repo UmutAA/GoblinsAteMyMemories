@@ -29,8 +29,9 @@ public abstract class TroopCard extends Card {
         health -= damage;
         if (health <= 0) {
             health = 0;
+            this.setAvailable(false);
         }
     }
 
-    public abstract boolean equals(TroopCard target);
+    public abstract boolean equals(Object obj);
 }

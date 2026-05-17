@@ -21,8 +21,7 @@ public class RangedCard extends TroopCard {
             throw new UnavailableCardException("This card has been already played!");
         }
         else{
-            //TODO
-            return 0;
+            return (this.getAccuracy() * this.getSpeed() / 10);
         }
     }
 
@@ -33,7 +32,22 @@ public class RangedCard extends TroopCard {
     }
 
     @Override
-    public boolean equals(TroopCard target){
-        //TODO
+    public boolean equals(Object obj){
+        if (obj instanceof RangedCard card)
+        {
+            if (this == obj)
+            {
+                return true;
+            }
+
+            else
+            {
+                return (getCardName().equals(card.getCardName()) && getHealth() == card.getHealth()
+                        && getSpeed() == card.getSpeed() && getAccuracy() == card.getAccuracy());
+            }
+        }
+        else{
+            return false;
+        }
     }
 }
