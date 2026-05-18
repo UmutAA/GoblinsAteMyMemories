@@ -1,24 +1,20 @@
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.Random;
-import java.util.TimerTask;
+import java.util.*;
 
 public class Boss extends Enemy implements Talkative{
-    private int healtCoef;
+    private int healthCoef;
     private int powerCoef;
     private final Random gen = new Random();
 
     public Boss(){}
     public Boss(String name, int health, int power, ArrayList<Card> cardList, ArrayList<String> quoteList,
                 int healthCoef, int powerCoef){
-        super(name, health, power, cardList, quoteList);
-        this.healtCoef = healthCoef;
+        super(name, health * healthCoef, power, cardList, quoteList);
+        this.healthCoef = healthCoef;
         this.powerCoef = powerCoef;
     }
 
     public int getHealthCoef() {
-        return this.healtCoef;
+        return this.healthCoef;
     }
 
     public int getPowerCoef() {
@@ -26,13 +22,44 @@ public class Boss extends Enemy implements Talkative{
     }
 
     public void getReward(Player target){
-        //TODO
+        if(super.getHealth() <= 0){
+            ArrayList<Card> temp = super.getCardList();
+            Card tempCard = temp.get(gen.nextInt(temp.size()));
+            Card tempCloned = null;
+            boolean condition = true;
+            while(condition){
+                if(tempCard instanceof RangedCard){
+                    tempCloned = ((RangedCard) tempCard).clone();
+                    condition = false;
+                }
+                else if(tempCard instanceof MeleeCard){
+                    tempCloned = ((MeleeCard) tempCard).clone();
+                    condition = false;
+                }
+                else{
+                    tempCard = temp.get(gen.nextInt(temp.size())); //spell card condition
+                }
+            }
+            target.addCard(tempCloned);
+        }
     }
 
     @Override
-    public int attack(){
-        //TODO
-        return 0;
+    public int attack() {
+        int damage = 0;
+        boolean played = false;
+        while (!played){
+            int choice = gen.nextInt(getCardList().size());
+            try{
+                damage = super.getCardList().get(choice).playCard();
+                played = true;
+            }
+            catch (UnavailableCardException e){
+                continue;
+            }
+
+        }
+        return (damage * super.getPower() * this.getPowerCoef());
     }
 
     @Override

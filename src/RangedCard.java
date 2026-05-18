@@ -50,4 +50,9 @@ public class RangedCard extends TroopCard {
             return false;
         }
     }
+
+    @Override
+    public Card clone(){
+        return new RangedCard(super.getCardName(),super.getHealth(),super.getSpeed(),this.getAccuracy());
+    }
 }

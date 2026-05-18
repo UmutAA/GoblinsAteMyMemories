@@ -91,7 +91,6 @@ public class Player extends Character implements Talkative{
                 System.out.println("Purchase failed.");
                 return false;
             }
-
             catch (NullPointerException e) {
                 System.out.println("No such card exists!");
                 System.out.println("Purchase failed.");

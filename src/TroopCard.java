@@ -1,4 +1,6 @@
-public abstract class TroopCard extends Card {
+import java.lang.Cloneable;
+
+public abstract class TroopCard extends Card implements Cloneable {
     private int health;
     private int speed;
 
@@ -34,4 +36,6 @@ public abstract class TroopCard extends Card {
     }
 
     public abstract boolean equals(Object obj);
+
+    public abstract Card clone();
 }
