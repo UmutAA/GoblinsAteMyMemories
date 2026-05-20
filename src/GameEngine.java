@@ -5,8 +5,9 @@ import java.util.Scanner;
 public class GameEngine {
     public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
-    public void shop(Player target){
-        System.out.println("Welcome to the Royal Market!");
+    public static void shop(Player target){
+        System.out.println("You saw a silhouette in the woods!");
+        System.out.println("Wandering Trader: Welcome to the Royal Market!");
         ArrayList<Emote> emotes = new ArrayList<Emote>();
         ArrayList<Card> cards = new ArrayList<Card>();
         Random gen = new Random();
@@ -35,7 +36,6 @@ public class GameEngine {
             System.out.println("1) Emote");
             System.out.println("2) Spell Card");
             System.out.print("Your choice: ");
-            scanner.nextLine();
             choice = scanner.nextInt();
             switch (choice)
             {
@@ -46,30 +46,22 @@ public class GameEngine {
                 case 1:
                     System.out.println("Available Emotes:");
                     for (int i = 0; i < emotes.size(); i++){
-                        System.out.printf("%d) %s",i , emotes.get(i).toString());
+                        System.out.printf("%d) %s\n",i , emotes.get(i).toString());
                     }
                     System.out.print("Which one do you like: ");
-                    scanner.nextLine();
                     choice = scanner.nextInt();
                     target.addEmote(emotes.get(choice));
-                    target.setGem(target.getGem() - emotes.get(choice).getPrice());
-                    System.out.println("You bought: " +  emotes.get(choice).getEmoteMessage() +
-                            " for: " + emotes.get(choice).getPrice());
                     choice = 1;
                     break;
 
                 case 2:
                     System.out.println("Available Spell Cards:");
                     for (int i = 0; i < cards.size(); i++){
-                        System.out.printf("%d) %s",i , cards.get(i).toString());
+                        System.out.printf("%d) %s\n",i , cards.get(i).toString());
                     }
                     System.out.print("Which one do you like: ");
-                    scanner.nextLine();
                     choice = scanner.nextInt();
                     target.addCard(cards.get(choice));
-                    target.setGem(target.getGem() - ((SpellCard)cards.get(choice)).getPrice());
-                    System.out.println("You bought: " +  cards.get(choice).getCardName() +
-                            " for: " + ((SpellCard)cards.get(choice)).getPrice());
                     choice = 1;
                     break;
 
@@ -83,5 +75,9 @@ public class GameEngine {
 
     public static void main(String[] args) {
         System.out.println("Welcome to the Game Engine");
+        Player player = new Player("Deneme", 100, 100, new ArrayList<Card>());
+        player.setGem(300);
+        shop(player);
+        System.out.println(player.toString());
     }
 }

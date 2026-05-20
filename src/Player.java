@@ -73,40 +73,34 @@ public class Player extends Character implements Talkative{
         System.out.println(emote.getEmoteMessage());
     }
 
-    public boolean addCard(Card card){
+    public void addCard(Card card){
         if (card instanceof SpellCard c){
             try{
                 c.buy(this);
                 this.getCardList().add(c);
                 this.setGem(this.getGem() - c.getPrice());
                 System.out.println("Card bought successfully");
-                return true;
             } catch (InsufficientMoneyException e) {
                 System.out.println("Insufficient Money. " + e.getMessage());
                 System.out.println("Purchase failed.");
-                return false;
             }
             catch (DuplicateException e) {
                 System.out.println(e.getMessage());
                 System.out.println("Purchase failed.");
-                return false;
             }
             catch (NullPointerException e) {
                 System.out.println("No such card exists!");
                 System.out.println("Purchase failed.");
-                return false;
             }
         }
 
         else{
             if (getCardList().contains(card)){
                 System.out.println("You already own this card!");
-                return false;
             }
 
             else{
                 System.out.println("You earned a new card: " + card.toString());
-                return true;
             }
         }
     }
