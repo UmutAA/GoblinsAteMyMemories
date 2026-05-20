@@ -53,6 +53,18 @@ public class RangedCard extends TroopCard {
 
     @Override
     public Card clone(){
-        return new RangedCard(super.getCardName(),super.getHealth(),super.getSpeed(),this.getAccuracy());
+        try{
+            RangedCard clone = (RangedCard) super.clone();
+            clone.setAccuracy(this.getAccuracy());
+            clone.setHealth(this.getHealth());
+            clone.setSpeed(this.getSpeed());
+            clone.setCardName(this.getCardName());
+            return clone;
+        }
+
+        catch(CloneNotSupportedException e){
+            System.out.println("Card cannot be cloned");
+            return null;
+        }
     }
 }

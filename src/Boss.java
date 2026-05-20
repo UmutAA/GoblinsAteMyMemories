@@ -3,7 +3,6 @@ import java.util.*;
 public class Boss extends Enemy implements Talkative{
     private int healthCoef;
     private int powerCoef;
-    private final Random gen = new Random();
 
     public Boss(){}
     public Boss(String name, int health, int power, ArrayList<Card> cardList, ArrayList<String> quoteList,
@@ -23,24 +22,18 @@ public class Boss extends Enemy implements Talkative{
 
     public void getReward(Player target){
         if(super.getHealth() <= 0){
-            ArrayList<Card> temp = super.getCardList();
-            Card tempCard = temp.get(gen.nextInt(temp.size()));
-            Card tempCloned = null;
+            Random gen = new Random();
             boolean condition = true;
             while(condition){
-                if(tempCard instanceof RangedCard){
-                    tempCloned = ((RangedCard) tempCard).clone();
-                    condition = false;
-                }
-                else if(tempCard instanceof MeleeCard){
-                    tempCloned = ((MeleeCard) tempCard).clone();
+                Card tempCard = super.getCardList().get(gen.nextInt(super.getCardList().size()));
+                if(tempCard instanceof Cloneable<?>){
+                    target.addCard(tempCard);
                     condition = false;
                 }
                 else{
-                    tempCard = temp.get(gen.nextInt(temp.size())); //spell card condition
+                    continue;
                 }
             }
-            target.addCard(tempCloned);
         }
     }
 
@@ -48,6 +41,7 @@ public class Boss extends Enemy implements Talkative{
     public int attack() {
         int damage = 0;
         boolean played = false;
+        Random gen = new Random();
         while (!played){
             int choice = gen.nextInt(getCardList().size());
             try{
@@ -70,6 +64,7 @@ public class Boss extends Enemy implements Talkative{
 
     @Override
     public void talk(){
+        Random gen = new Random();
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override

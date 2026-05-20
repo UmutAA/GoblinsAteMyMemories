@@ -17,33 +17,29 @@ public class Figurant extends Enemy{
     @Override
     public void getReward(Player target){
         if(super.getHealth() <= 0){
-            ArrayList<Card> temp = super.getCardList();
-            Card tempCard = temp.getFirst();
-            Card tempCloned = null;
-            if(tempCard instanceof RangedCard){
-                tempCloned = ((RangedCard) tempCard).clone();
-            }
-            else if(tempCard instanceof MeleeCard){
-                tempCloned = ((MeleeCard) tempCard).clone();
-            }
-            target.addCard(tempCloned);
+            target.addCard(getCardList().getFirst());
+            System.out.println("You earned a card: " +  getCardList().getFirst().toString());
         }
     }
 
     @Override
     public int attack(){
-        int damage = 0;
         if(this.isAggressive()){
-            try{
-                damage = super.getCardList().getFirst().playCard();
+            boolean played = false;
+            int damage = 0;
+            while (!played){
+                try{
+                    damage = this.getCardList().getFirst().playCard();
+                    played = true;
+                }
+                catch (UnavailableCardException e){
+                    continue;
+                }
             }
-            catch (UnavailableCardException _){
-
-            }
-            return damage * super.getPower();
+            return (damage * super.getPower());
         }
         else{
-            return damage;
+            return 0;
         }
     }
 

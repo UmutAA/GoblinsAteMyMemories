@@ -1,6 +1,6 @@
 import java.lang.Cloneable;
 
-public abstract class TroopCard extends Card implements Cloneable {
+public abstract class TroopCard extends Card{
     private int health;
     private int speed;
 
@@ -36,6 +36,4 @@ public abstract class TroopCard extends Card implements Cloneable {
     }
 
     public abstract boolean equals(Object obj);
-
-    public abstract Card clone();
 }

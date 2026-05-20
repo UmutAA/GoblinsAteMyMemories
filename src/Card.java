@@ -13,7 +13,9 @@ public abstract class Card{
     public String getCardName() {
         return cardName;
     }
-
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
+    }
     public boolean isAvailable() {
         return isAvailable;
     }
