@@ -34,6 +34,7 @@ public class Boss extends Enemy implements Talkative{
                     continue;
                 }
             }
+            target.setGem( target.getGem() + gen.nextInt(21) + 20);
         }
     }
 

@@ -17,8 +17,8 @@ public class Figurant extends Enemy{
     @Override
     public void getReward(Player target){
         if(super.getHealth() <= 0){
-            target.addCard(getCardList().getFirst());
-            System.out.println("You earned a card: " +  getCardList().getFirst().toString());
+            Random gen = new Random();
+            target.setGem(target.getGem() + gen.nextInt(11) + 5);
         }
     }
 
@@ -39,6 +39,7 @@ public class Figurant extends Enemy{
             return (damage * super.getPower());
         }
         else{
+            System.out.println("He seems peaceful...");
             return 0;
         }
     }
