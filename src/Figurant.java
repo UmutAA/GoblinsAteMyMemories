@@ -37,6 +37,7 @@ public class Figurant extends Enemy{
             int damage = 0;
             while (!played){
                 try{
+                    setCurrentCard(getCardList().getFirst());
                     damage = this.getCardList().getFirst().playCard();
                     played = true;
                 }

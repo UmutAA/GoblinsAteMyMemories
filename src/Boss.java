@@ -46,6 +46,7 @@ public class Boss extends Enemy implements Talkative{
         while (!played){
             int choice = gen.nextInt(getCardList().size());
             try{
+                setCurrentCard(getCardList().get(choice));
                 damage = super.getCardList().get(choice).playCard();
                 played = true;
             }

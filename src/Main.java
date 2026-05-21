@@ -33,7 +33,8 @@ public class Main {
     // ─────────────────────────────────────────────────────────────
     //  Combat loop – returns true if player survives
     // ─────────────────────────────────────────────────────────────
-    public static boolean combat(Player player, Enemy enemy, Scanner input) {
+    public static boolean combat(Player player, Enemy enemy) {
+        Scanner input = new Scanner(System.in);
         slowPrint("\nENCOUNTER: " + enemy.getName());
         slowPrint(enemy.toString());
         pause(400);
@@ -246,7 +247,7 @@ public class Main {
 
         //Intro story
         String story =
-                "=============\n" + "GOBLINS ATE MY MEMORIES\n" + "=============\n";
+                "===========================\n" + "  GOBLINS ATE MY MEMORIES\n" + "===========================\n";
         System.out.print(story);
         pause(500);
 
@@ -308,7 +309,7 @@ public class Main {
             slowPrint("Forest Wanderer: \"...leave me alone.\" He steps aside.");
             slowPrint("The wanderer is not hostile. You pass safely.\n");
         } else {
-            if (!combat(player, enc1, input)) { endGame(false, playerName); return; }
+            if (!combat(player, enc1)) { endGame(false, playerName); return; }
         }
 
         //  ENCOUNTER 2 – Thief (always triggers, random steal outcome)
@@ -320,7 +321,7 @@ public class Main {
         pause(400);
 
         Thief enc2 = buildThief("Sly Rook", 35, 2);
-        if (!combat(player, enc2, input)) { endGame(false, playerName); return; }
+        if (!combat(player, enc2)) { endGame(false, playerName); return; }
 
         // Shop after encounter 2
         shop(player);
@@ -337,7 +338,7 @@ public class Main {
             slowPrint("This one is harmless... for now.\n");
         } else {
             slowPrint("Corrupted Villager: \"YOU DON'T BELONG HERE!\"");
-            if (!combat(player, enc3, input)) { endGame(false, playerName); return; }
+            if (!combat(player, enc3)) { endGame(false, playerName); return; }
         }
 
         //  ENCOUNTER 4 – Thief (random 70% chance to appear)
@@ -350,7 +351,7 @@ public class Main {
         if (thiefAppears) {
             slowPrint("A knife glints in the dark. \"Your cards or your life!\"");
             Thief enc4 = buildThief("Shadow Pickpocket", 45, 3);
-            if (!combat(player, enc4, input)) { endGame(false, playerName); return; }
+            if (!combat(player, enc4)) { endGame(false, playerName); return; }
         } else {
             slowPrint("...Nothing. The alley was empty. Lucky.");
         }
@@ -368,7 +369,7 @@ public class Main {
 
         Boss midBoss = buildMidBoss();
         midBoss.talk(); pause(1200);
-        if (!combat(player, midBoss, input)) { endGame(false, playerName); return; }
+        if (!combat(player, midBoss)) { endGame(false, playerName); return; }
 
         slowPrint("\nThe gate crumbles. Beyond it lies the Veil itself.");
         slowPrint("You feel the air grow cold. Something ancient stirs...");
@@ -393,7 +394,7 @@ public class Main {
         slowPrint("\"Then come. Let me show you what true oblivion feels like.\"");
         pause(800);
 
-        if (!combat(player, finalBoss, input)) { endGame(false, playerName); return; }
+        if (!combat(player, finalBoss)) { endGame(false, playerName); return; }
 
         // ── Victory ───────────────────────────────────────────────
         endGame(true, playerName);

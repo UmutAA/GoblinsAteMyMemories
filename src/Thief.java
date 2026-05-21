@@ -85,6 +85,7 @@ public class Thief extends Enemy{
             while (!played){
                 int choice = gen.nextInt(getStolenCards().size());
                 try{
+                    setCurrentCard(getStolenCards().get(choice));
                     damage = this.getStolenCards().get(choice).playCard();
                     played = true;
                 }

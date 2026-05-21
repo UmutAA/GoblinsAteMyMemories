@@ -35,7 +35,7 @@ public class Player extends Character implements Talkative{
         int damage = 0;
         System.out.println("Your Deck: ");
         for (int i = 0; i < this.getCardList().size(); i++) {
-            System.out.printf("%d) %s\n", i + 1, getCardList().get(i).toString());
+            System.out.printf("%d) %s\n", i, getCardList().get(i).toString());
         }
         boolean played = false;
         while (!played){
@@ -43,7 +43,8 @@ public class Player extends Character implements Talkative{
             Scanner scanner = new Scanner(System.in);
             int choice = scanner.nextInt();
             try {
-                damage = getCardList().get(choice - 1).playCard();
+                damage = getCardList().get(choice).playCard();
+                setCurrentCard(getCardList().get(choice));
                 played = true;
             } catch (UnavailableCardException e) {
                 System.out.println("Can't play this card: " + e.getMessage());

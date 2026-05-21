@@ -5,6 +5,7 @@ public abstract class Character {
     private int health;
     private int power;
     private ArrayList<Card> cardList = new ArrayList<Card>();
+    private Card currentCard;
 
     protected Character() {
         cardList = new ArrayList<Card>();
@@ -31,6 +32,14 @@ public abstract class Character {
 
     public ArrayList<Card> getCardList() {
         return cardList;
+    }
+
+    public Card getCurrentCard() {
+        return currentCard;
+    }
+
+    public  void setCurrentCard(Card currentCard) {
+        this.currentCard = currentCard;
     }
 
     public void setHealth(int health) {
