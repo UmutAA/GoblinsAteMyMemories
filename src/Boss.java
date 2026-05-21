@@ -66,16 +66,9 @@ public class Boss extends Enemy implements Talkative{
     @Override
     public void talk(){
         Random gen = new Random();
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                if (!quoteList.isEmpty()) {
-                    int index = gen.nextInt(quoteList.size());
-                    System.out.println(quoteList.get(index));
-                }
-            }
-        };
-        timer.scheduleAtFixedRate(task, 0, 5000); // Every 5 seconds
+        if (!quoteList.isEmpty()) {
+            int index = gen.nextInt(quoteList.size());
+            System.out.println(quoteList.get(index));
+        }
     }
 }

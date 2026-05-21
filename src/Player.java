@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Player extends Character implements Talkative{
@@ -64,13 +65,30 @@ public class Player extends Character implements Talkative{
 
     public void talk(){
         Scanner input = new Scanner(System.in);
+        if (emoteList.isEmpty()){
+            System.out.println("There are no emotes to talk.");
+            return;
+        }
         for (int i = 0; i < emoteList.size(); i++) {
-            System.out.printf("%d. %s", i++, emoteList.get(i).getEmoteMessage());
+            System.out.printf("%d. %s", i, emoteList.get(i).getEmoteMessage());
         }
         System.out.print("Please enter emote index: ");
-        int choice = input.nextInt() - 1;
-        Emote emote = emoteList.get(choice);
-        System.out.println(emote.getEmoteMessage());
+        boolean talked = false;
+        while (!talked){
+            try{
+                int choice = input.nextInt();
+                Emote emote = emoteList.get(choice);
+                System.out.println(emote.getEmoteMessage());
+                talked = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid emote index:" + e.getMessage());
+                System.out.print("Please enter a valid emote index: ");
+            }
+            catch (IndexOutOfBoundsException e){
+                System.out.println("Invalid emote index:" + e.getMessage());
+                System.out.println("Please enter a valid emote index: ");
+            }
+        }
     }
 
     public void addCard(Card card){
@@ -105,26 +123,22 @@ public class Player extends Character implements Talkative{
         }
     }
 
-    public boolean addEmote(Emote emote){
+    public void addEmote(Emote emote){
         try{
             emote.buy(this);
             this.getEmoteList().add(emote);
             this.setGem(this.getGem() - emote.getPrice());
             System.out.println("Emote bought successfully");
-            return true;
         } catch (InsufficientMoneyException e) {
             System.out.println("Insufficient Money. " + e.getMessage());
             System.out.println("Purchase failed.");
-            return false;
         }
         catch (DuplicateException e) {
             System.out.println(e.getMessage());
             System.out.println("Purchase failed.");
-            return false;
         } catch (NullPointerException e) {
             System.out.println("No such emote exists!");
             System.out.println("Purchase failed.");
-            return false;
         }
     }
 
@@ -141,26 +155,30 @@ public class Player extends Character implements Talkative{
         int choice = 1;
         while (choice != 0)
         {
-            System.out.print("Your choice: ");
-            Scanner scanner = new Scanner(System.in);
-            choice = scanner.nextInt();
-            switch (choice) {
-                case 0:
-                    break;
+            try{
+                System.out.print("Your choice: ");
+                Scanner scanner = new Scanner(System.in);
+                choice = scanner.nextInt();
+                switch (choice) {
+                    case 0:
+                        break;
 
-                case 1:
-                    for (Card card : getCardList()) {
-                        System.out.println(card.toString());
-                    }
-                    break;
-                case 2:
-                    for (Emote emote: this.emoteList) {
-                        System.out.println(emote.toString());
-                    }
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-                    break;
+                    case 1:
+                        for (Card card : getCardList()) {
+                            System.out.println(card.toString());
+                        }
+                        break;
+                    case 2:
+                        for (Emote emote: this.emoteList) {
+                            System.out.println(emote.toString());
+                        }
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid choice. Please try again.");
             }
         }
         System.out.println("======================");

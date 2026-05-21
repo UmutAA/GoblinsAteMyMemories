@@ -19,6 +19,14 @@ public class Figurant extends Enemy{
         if(super.getHealth() <= 0){
             Random gen = new Random();
             target.setGem(target.getGem() + gen.nextInt(11) + 5);
+            if(gen.nextBoolean()){
+                target.setPower(target.getPower() + 1);
+            }
+            else{
+                target.setHealth(target.getHealth() + 1);
+            }
+            System.out.println("You earned some gem and leveled up!");
+            System.out.println("Your new stats: " + target.toString());
         }
     }
 
