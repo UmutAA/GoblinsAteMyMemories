@@ -46,7 +46,18 @@ public class Boss extends Enemy implements Talkative{
         while (!played){
             int choice = gen.nextInt(getCardList().size());
             try{
-                setCurrentCard(getCardList().get(choice));
+                if (getCardList().get(choice) instanceof TroopCard){
+                    setCurrentCard(getCardList().get(choice));
+                }
+                else if (getCardList().get(choice) instanceof SpellCard sc) {
+                    this.getCardList().remove(choice);
+                    for (Card c :  this.getCardList()) {
+                        if (c.isAvailable() && c instanceof TroopCard tc) {
+                            setCurrentCard(c);
+                        }
+                    }
+                    setCurrentCard(getCardList().getFirst());
+                }
                 damage = super.getCardList().get(choice).playCard();
                 played = true;
             }

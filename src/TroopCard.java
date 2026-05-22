@@ -2,17 +2,23 @@ import java.lang.Cloneable;
 
 public abstract class TroopCard extends Card{
     private int health;
+    private int maxHealth;
     private int speed;
 
     protected TroopCard(){}
     protected TroopCard(String cardName, int health, int speed){
         super(cardName);
         this.health = health;
+        this.maxHealth = health;
         this.speed = speed;
     }
 
     public int getHealth() {
         return health;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     public void setHealth(int health) {

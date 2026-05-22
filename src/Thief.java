@@ -28,7 +28,7 @@ public class Thief extends Enemy{
 
     public void steal(Player target){
         Random gen = new Random();
-        Card stolen = target.getCardList().get(gen.nextInt(getCardList().size()));
+        Card stolen = target.getCardList().get(gen.nextInt(target.getCardList().size()));
         if(stolen instanceof RangedCard rc){
             this.stolenCards.add(rc);
             target.getCardList().remove(stolen);
@@ -85,7 +85,9 @@ public class Thief extends Enemy{
             while (!played){
                 int choice = gen.nextInt(getStolenCards().size());
                 try{
-                    setCurrentCard(getStolenCards().get(choice));
+                    if (getStolenCards().get(choice) instanceof TroopCard){
+                        setCurrentCard(getStolenCards().get(choice));
+                    }
                     damage = this.getStolenCards().get(choice).playCard();
                     played = true;
                 }

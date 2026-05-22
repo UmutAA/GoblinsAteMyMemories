@@ -39,16 +39,17 @@ public class Figurant extends Enemy{
                 try{
                     setCurrentCard(getCardList().getFirst());
                     damage = this.getCardList().getFirst().playCard();
+                    System.out.println(this.getName() + " played " + this.getCardList().getFirst().getCardName());
                     played = true;
                 }
                 catch (UnavailableCardException e){
-                    continue;
+                    return 0;
                 }
             }
             return (damage * super.getPower());
         }
         else{
-            System.out.println("He seems peaceful...");
+            System.out.println(this.getName() + " is not hostile, you pass this round safely.");
             return 0;
         }
     }

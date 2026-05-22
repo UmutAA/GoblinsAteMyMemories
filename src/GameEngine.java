@@ -21,7 +21,7 @@ public class GameEngine {
         System.out.println();
     }
 
-    public static void slowPrint(String text) { slowPrint(text, 30); }
+    public static void slowPrint(String text) { slowPrint(text, 5); }//30
 
     public static void pause(int ms) {
         try { TimeUnit.MILLISECONDS.sleep(ms); }
@@ -29,9 +29,8 @@ public class GameEngine {
     }
 
     // Combat Scene
-    public static boolean combat(Player player, Enemy enemy){
-        Scanner input = new Scanner(System.in);
-        slowPrint("\n---ENCOUNTER---" + enemy.getName());
+    public static boolean combat(Player player, Enemy enemy, Scanner input){
+        slowPrint("---ENCOUNTER---");
         slowPrint(enemy.toString());
 
         if (enemy instanceof Boss boss){
@@ -39,39 +38,72 @@ public class GameEngine {
             pause(1000);
         }
 
+        if (enemy instanceof Thief thief) {
+            if (thief.getStolenCards().isEmpty() && !player.getCardList().isEmpty()) {
+                thief.steal(player);
+                thief.setCurrentCard(thief.getStolenCards().getFirst());
+            }
+        }
+        int wave = 1;
         int round = 1;
         while(enemy.getHealth() > 0 && player.getHealth() > 0){
+            // Player's turn
             player.showInventory();
-            System.out.println("\n=====================");
-            System.out.println("  Round " + round + " | " + player.toString());
-            System.out.println("  " + enemy.getName() + " HP: " + enemy.getHealth());
-            System.out.println("=====================");
-            System.out.println("(0) Attack (1) Emote");
-            System.out.print("Your choice: ");
-
-            while(true){
+            int choice = 0;
+            while(choice != -1){
+                if (!player.checkDeck()){
+                    System.out.println("You don't have any card left!");
+                    break;
+                }
                 try {
-                    int choice = input.nextInt();
+                    System.out.println("\n=====================");
+                    System.out.println("  Round " + round + " | " + player.toString());
+                    System.out.println("  " + enemy.getName() + " HP: " + enemy.getHealth());
+                    System.out.println("=====================");
+                    System.out.println("(0) Attack (1) Emote");
+                    System.out.print("Your choice: ");
+                    choice = input.nextInt();
                     switch (choice) {
                         case 0:
-                            int playerDmg = player.attack();
-                            if(enemy.getCurrentCard() instanceof TroopCard tc) {
-                                tc.takeDamage(playerDmg);
+                            enemy.takeDamage(player.attack());
+                            if (enemy.getCurrentCard() != null) {
+                                System.out.println(enemy.getCurrentCard().toString());
                             }
+                            if (enemy.getHealth() <= 0) choice = -1;
                             break;
                         case 1:
+                            player.talk();
                             break;
                         default:
                             System.out.println("Invalid choice.");
                             break;
                     }
-                    break;
                 } catch (InputMismatchException e) {
                     System.out.println("Invalid choice. Try again: ");
                 }
+                pause(300);
+                if(enemy.getHealth() <= 0){
+                    break;
+                }
+                // Enemy's turn
+                player.takeDamage(enemy.attack());
+                System.out.println(player.getCurrentCard().toString());
+                round++;
             }
+            wave++;
+            pause(300);
+        }
+        if (enemy.getHealth() <= 0){
+            slowPrint("\n Victory! " + enemy.getName() + " has been defeated!");
+            enemy.getReward(player);
+            player.resetDeck();
+            return true;
         }
 
+        else{
+            slowPrint("\n You have fallen in battle. The darkness claims you...");
+            return false;
+        }
     }
 
     // Shop Scene
@@ -100,11 +132,11 @@ public class GameEngine {
         ArrayList<Card> cards = new ArrayList<Card>();
         Random gen = new Random();
         SpellCard zap = new SpellCard("Zap", gen.nextInt(11) + 10,
-                gen.nextInt(6) + 10);
+                gen.nextInt(4) + 3);
         SpellCard fireball = new SpellCard("Fireball", gen.nextInt(11) + 30,
-                gen.nextInt(21) + 30);
+                gen.nextInt(6) + 5);
         SpellCard poison = new SpellCard("Poison", gen.nextInt(17) + 20,
-                gen.nextInt(16) + 15);
+                gen.nextInt(4) + 4);
         cards.add(zap);
         cards.add(fireball);
         cards.add(poison);
@@ -168,20 +200,17 @@ public class GameEngine {
         Random gen = new Random();
         // Initialising enemies
         ArrayList<Card> fig1_cards = new ArrayList<Card>();
-        fig1_cards.add(new MeleeCard("Goblin Machine", 5, 9, 5));
-
-        ArrayList<Card> fig2_cards = new ArrayList<Card>();
-        fig2_cards.add(new RangedCard("Dart Goblin", 6, 8, 8));
+        fig1_cards.add(new MeleeCard("Goblin Machine", 5, 9, 5)); //4 base damage
 
         ArrayList<Card> boss1_cards = new ArrayList<Card>();
-        boss1_cards.add(new MeleeCard("Mega Goblin", 15, 8, 10));
-        boss1_cards.add(new MeleeCard("Goblinstein", 8, 6, 10));
-        boss1_cards.add(new SpellCard("Goblin Barrel", 50, 4));
+        boss1_cards.add(new MeleeCard("Mega Goblin", 15, 8, 10)); // 8 base damage
+        boss1_cards.add(new MeleeCard("Goblinstein", 20, 6, 10)); // 6 base damage
+        boss1_cards.add(new SpellCard("Goblin Barrel", 50, 4)); // 4 damage
 
         ArrayList<Card> boss2_cards = new ArrayList<Card>();
-        boss2_cards.add(new RangedCard("Baby Dragon", 8, 10, 5));
-        boss2_cards.add(new RangedCard("Minions", 10, 8, 5));
-        boss2_cards.add(new SpellCard("Goblin Curse",  70, 6));
+        boss2_cards.add(new RangedCard("Baby Dragon", 12, 10, 10)); // 10 base damage
+        boss2_cards.add(new RangedCard("Minions", 10, 12, 10));   // 12 base damage
+        boss2_cards.add(new SpellCard("Goblin Curse",  70, 6)); // 6 damage
 
         ArrayList<String> quotes = new ArrayList<String>();
         quotes.add("Your bones will decorate my throne!");
@@ -192,28 +221,30 @@ public class GameEngine {
         quotes.add("You fool, your existence is nothing beyond compared to me.");
         quotes.add("HEHEHEHE!");
 
-        Figurant fig1 = new Figurant("Zog", 1, 1, fig1_cards,new ArrayList<>(), gen.nextBoolean());
-        Figurant fig2 = new Figurant("Grack", 1, 2, fig2_cards,new ArrayList<>(), gen.nextBoolean());
+        Figurant fig1 = new Figurant("Zog", 1, 1, fig1_cards,new ArrayList<>(), true);
+        Figurant fig2 = new Figurant("Grack", 1, 2, new ArrayList<>(),new ArrayList<>(), false);
         Thief thief = new Thief("Quixle", 1, 2, new ArrayList<Card>(), new ArrayList<>());
         Boss midBoss = new Boss("Scar Face", 2, 2, boss1_cards, quotes,  1, 2);
         Boss finalBoss = new Boss("Goblin Lord", 2, 3, boss2_cards, quotes,  2, 3);
 
         enemies.add(fig1);
         enemies.add(fig2);
-        enemies.add(thief);
         enemies.add(midBoss);
+        enemies.add(thief);
         enemies.add(finalBoss);
 
         Scanner input = new Scanner(System.in);
+
         // INTRO
         System.out.println("===========================\n" + "  GOBLINS ATE MY MEMORIES\n" +
                 "===========================\n");
+        slowPrint("----Chapter I: CARDS----\n");
         try{
             String story = Files.readString(Path.of("story.txt"));
             for (char c : story.toCharArray()) {
                 System.out.print(c);
                 try {
-                    TimeUnit.MILLISECONDS.sleep(75);
+                    TimeUnit.MILLISECONDS.sleep(5);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
@@ -228,8 +259,8 @@ public class GameEngine {
         }
         pause(500);
 
+        // Initialising player
         String playerName = "Hero";
-
         while(true){
             System.out.println("What was your name: ");
             try{
@@ -241,20 +272,104 @@ public class GameEngine {
             }
         }
 
-        // Initialising player
         ArrayList<Card> playerDeck = new ArrayList<Card>();
-        playerDeck.add(new MeleeCard("Giant", 7, 3, 5));
-        playerDeck.add(new RangedCard("Archer",3 , 5, 5));
+        playerDeck.add(new MeleeCard("Giant", 7, 3, 10)); // 3 base damage
+        playerDeck.add(new RangedCard("Archer",3 , 6, 9)); // 5 base damage
         Player player = new Player(playerName, 1, 1, playerDeck);
         player.setGem(100);
 
-        slowPrint("You quickly grab your old cards:\n");
+        slowPrint("You quickly grab your old card deck:");
         for (Card c: player.getCardList()) {
             System.out.println(c.toString());
         }
         pause(500);
 
-        // ENCOUNTER 1: FIGURANT: RANDOM AGGRESSIVENESS
+        // ENCOUNTER 1: FIGURANT: AGGRESSIVE
+        slowPrint("As you grab your cards you remember how this world works.");
+        slowPrint("All you need to do is to use the cards in your deck and cards fight for you.\n");
+        if(!combat(player, enemies.getFirst(), input)){
+            System.out.println("=============");
+            System.out.println("  GAME OVER  ");
+            System.out.println("=============");
+            return;
+        }
+        slowPrint(enemies.getFirst().getName() + ": I won't let you take your *** back!");
+        slowPrint(enemies.getFirst().getName() + " throws your *** through window.\n");
 
+        shop(player);
+
+        // ENCOUNTER 2: FIGURANT: RANDOM AGGRESSIVENESS
+        slowPrint("----Chapter II: HE IS HARMLESS----\n");
+        slowPrint("As you are still searching for your ***, you hear a voice coming from The Deep Woods");
+        slowPrint("You decide to take a look into it, thus you follow the voice");
+        slowPrint("Suddenly you see the source of the voice. IT'S A GOBLIN");
+        slowPrint("But it seems... upset.\n");
+        if(!combat(player, enemies.get(1), input)){
+            System.out.println("=============");
+            System.out.println("  GAME OVER  ");
+            System.out.println("=============");
+            return;
+        }
+        slowPrint(enemies.get(1).getName() + ": Please, help me. I just want my father back :(.");
+        slowPrint(enemies.get(1).getName() + ": I know what happened your memories. I will tell you if you help me.");
+        slowPrint(enemies.get(1).getName() + ": They are kept in the ***. That's why you can't remember anything.");
+        slowPrint(enemies.get(1).getName() + " suddenly realizes something and starts running away.\n");
+
+        shop(player);
+
+        // ENCOUNTER 3: MIDBOSS
+        slowPrint("----Chapter III: Right Arm----\n");
+        slowPrint("");
+        slowPrint("");
+        slowPrint("");
+        slowPrint("\n");
+        if(!combat(player, enemies.get(2), input)){
+            System.out.println("=============");
+            System.out.println("  GAME OVER  ");
+            System.out.println("=============");
+            return;
+        }
+        slowPrint(enemies.get(2).getName() + ": ");
+        slowPrint(enemies.get(2).getName() + ": ");
+        slowPrint(enemies.get(2).getName() + ": ");
+        slowPrint(enemies.get(2).getName() + " \n");
+
+        shop(player);
+
+        // ENCOUNTER 4: THIEF
+        slowPrint("----Chapter IV: WHERE IS MY CARD?----\n");
+        slowPrint("");
+        slowPrint("");
+        slowPrint("");
+        slowPrint("\n");
+        if(!combat(player, enemies.get(3), input)){
+            System.out.println("=============");
+            System.out.println("  GAME OVER  ");
+            System.out.println("=============");
+            return;
+        }
+        slowPrint(enemies.get(3).getName() + ": ");
+        slowPrint(enemies.get(3).getName() + ": ");
+        slowPrint(enemies.get(3).getName() + ": ");
+        slowPrint(enemies.get(3).getName() + " \n");
+
+        shop(player);
+
+        // ENCOUNTER 5: FINAL BOSS
+        slowPrint("----Chapter V: MEMORIES----\n");
+        slowPrint("");
+        slowPrint("");
+        slowPrint("");
+        slowPrint("\n");
+        if(!combat(player, enemies.get(4), input)){
+            System.out.println("=============");
+            System.out.println("  GAME OVER  ");
+            System.out.println("=============");
+            return;
+        }
+        slowPrint(enemies.get(4).getName() + ": ");
+        slowPrint(enemies.get(4).getName() + ": ");
+        slowPrint(enemies.get(4).getName() + ": ");
+        slowPrint(enemies.get(4).getName() + " \n");
     }
 }

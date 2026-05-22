@@ -44,7 +44,17 @@ public class Player extends Character implements Talkative{
             int choice = scanner.nextInt();
             try {
                 damage = getCardList().get(choice).playCard();
-                setCurrentCard(getCardList().get(choice));
+                if (getCardList().get(choice) instanceof TroopCard) {
+                    setCurrentCard(getCardList().get(choice));
+                } else if (getCardList().get(choice) instanceof SpellCard sc) {
+                    this.getCardList().remove(choice);
+                    for (Card c :  this.getCardList()) {
+                        if (c.isAvailable() && c instanceof TroopCard tc) {
+                            setCurrentCard(c);
+                        }
+                    }
+                    setCurrentCard(getCardList().getFirst());
+                }
                 played = true;
             } catch (UnavailableCardException e) {
                 System.out.println("Can't play this card: " + e.getMessage());
@@ -71,7 +81,7 @@ public class Player extends Character implements Talkative{
             return;
         }
         for (int i = 0; i < emoteList.size(); i++) {
-            System.out.printf("%d. %s", i, emoteList.get(i).getEmoteMessage());
+            System.out.printf("%d. %s\n", i, emoteList.get(i).getEmoteMessage());
         }
         System.out.print("Please enter emote index: ");
         boolean talked = false;
@@ -79,7 +89,7 @@ public class Player extends Character implements Talkative{
             try{
                 int choice = input.nextInt();
                 Emote emote = emoteList.get(choice);
-                System.out.println(emote.getEmoteMessage());
+                System.out.println("\n" + this.getName() + ": " + emote.getEmoteMessage());
                 talked = true;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid emote index:" + e.getMessage());
