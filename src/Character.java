@@ -17,8 +17,9 @@ public abstract class Character {
         this.power = power;
         this.cardList = cardList;
         for  (Card card : cardList) {
-            if (card instanceof TroopCard) {
-                currentCard = card;
+            if (card instanceof TroopCard tc) {
+                this.currentCard = tc;
+                break;
             }
         }
     }
@@ -64,32 +65,57 @@ public abstract class Character {
 
     public boolean checkDeck(){
         for (Card card : this.getCardList()){
-            if (card.isAvailable())
+            if (card instanceof TroopCard tc)
             {
-                return true;
+                if(tc.isAvailable()) return true;
             }
         }
         return false;
     }
 
     public void takeDamage(int damage) {
+        boolean damageTaken = false;
         if (!checkDeck()) {
             this.setHealth(this.getHealth() - 1);
             System.out.println(this.getName() + " has no available card left. And took a damage");
+            System.out.println(this.toString());
+            damageTaken = true;
         }
         else{
             if(getCurrentCard() instanceof TroopCard tc){
+                if (!tc.isAvailable()){
+                    for (Card card : this.getCardList()) {
+                        if (card instanceof  TroopCard tc2 && tc2.isAvailable()) {
+                            this.setCurrentCard(tc2);
+                            break;
+                        }
+                    }
+                }
                 tc.takeDamage(damage);
-                System.out.println(tc.getCardName() + " took " + damage + " damage.");
+                System.out.println(tc.toString());
                 if (tc.getHealth() <= 0) {
                     tc.setHealth(0);
                     System.out.println(tc.getCardName() + " is down.");
                     if (!checkDeck()) {
                         this.setHealth(this.getHealth() - 1);
                         System.out.println(this.getName() + " has no available card left. And took a damage");
+                        System.out.println(this.toString());
+                        damageTaken = true;
+                    }
+                    else{
+                        for (Card card : this.getCardList()) {
+                            if (card instanceof  TroopCard tc2 && tc2.isAvailable()) {
+                                this.setCurrentCard(tc2);
+                            }
+                        }
                     }
                 }
             }
+        }
+
+        if (damageTaken && this.getHealth() > 0) {
+            this.resetDeck();
+            System.out.println(this.getName() + " has renewed his deck. He's coming for another round.");
         }
     }
 

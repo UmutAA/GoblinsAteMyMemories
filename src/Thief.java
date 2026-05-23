@@ -28,31 +28,33 @@ public class Thief extends Enemy{
 
     public void steal(Player target){
         Random gen = new Random();
-        Card stolen = target.getCardList().get(gen.nextInt(target.getCardList().size()));
-        if(stolen instanceof RangedCard rc){
-            this.stolenCards.add(rc);
-            target.getCardList().remove(stolen);
-            System.out.println(getName() + " stole one of your cards: " + stolen.toString());
-        }
-        else if(stolen instanceof MeleeCard mc){
-            this.stolenCards.add(mc);
-            target.getCardList().remove(stolen);
-            System.out.println(getName() + " stole one of your cards: " + stolen.toString());
-        }
-        else{
-            int random = gen.nextInt(11);
-            if (random < 5){ // 50% chance
-                this.setGemsStolen((target.getGem() / 25) + this.getGemsStolen());
+        while (true){
+            Card stolen = target.getCardList().get(gen.nextInt(target.getCardList().size()));
+            if(stolen instanceof TroopCard tc){
+                this.stolenCards.add(tc);
+                super.getCardList().add(tc);
+                target.getCardList().remove(stolen);
+                System.out.println(getName() + " stole one of your cards: " + stolen.toString());
+                break;
             }
-            else if(random < 9){ // 30% chance
-                this.setGemsStolen((target.getGem() / 50) + this.getGemsStolen());
+            else{
+                continue;
             }
-            else{ // 20% chance
-                this.setGemsStolen((target.getGem() / 75) + this.getGemsStolen());
-            }
-            target.setGem(target.getGem() - this.getGemsStolen());
-            System.out.println(getName() + " stole " + getGemsStolen() + " gems: ");
         }
+
+        int random = gen.nextInt(11);
+        if (random < 5){ // 50% chance
+            this.setGemsStolen((target.getGem() / 25) + this.getGemsStolen());
+        }
+        else if(random < 9){ // 30% chance
+            this.setGemsStolen((target.getGem() / 50) + this.getGemsStolen());
+        }
+        else{ // 20% chance
+            this.setGemsStolen((target.getGem() / 75) + this.getGemsStolen());
+        }
+        target.setGem(target.getGem() - this.getGemsStolen());
+        System.out.println(getName() + " stole " + getGemsStolen() + " gems from you");
+
     }
 
     @Override

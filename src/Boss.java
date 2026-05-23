@@ -10,6 +10,11 @@ public class Boss extends Enemy implements Talkative{
         super(name, health * healthCoef, power, cardList, quoteList);
         this.healthCoef = healthCoef;
         this.powerCoef = powerCoef;
+        for (Card c: super.getCardList()){
+            if (c instanceof TroopCard tc){
+                tc.setHealth(health * healthCoef);
+            }
+        }
     }
 
     public int getHealthCoef() {
@@ -34,7 +39,7 @@ public class Boss extends Enemy implements Talkative{
                     continue;
                 }
             }
-            target.setGem( target.getGem() + gen.nextInt(21) + 20);
+            target.setGem(target.getGem() + gen.nextInt(31) + 25);
         }
     }
 
@@ -44,29 +49,33 @@ public class Boss extends Enemy implements Talkative{
         boolean played = false;
         Random gen = new Random();
         while (!played){
-            int choice = gen.nextInt(getCardList().size());
             try{
-                if (getCardList().get(choice) instanceof TroopCard){
-                    setCurrentCard(getCardList().get(choice));
+                int choice = gen.nextInt(getCardList().size());
+                if (getCardList().get(choice) instanceof TroopCard tc){
+                    if (tc.isAvailable()){
+                        setCurrentCard(getCardList().get(choice));
+                    }
                 }
                 else if (getCardList().get(choice) instanceof SpellCard sc) {
-                    this.getCardList().remove(choice);
                     for (Card c :  this.getCardList()) {
                         if (c.isAvailable() && c instanceof TroopCard tc) {
-                            setCurrentCard(c);
+                            setCurrentCard(tc);
+                            break;
                         }
                     }
-                    setCurrentCard(getCardList().getFirst());
                 }
                 damage = super.getCardList().get(choice).playCard();
+                System.out.println(super.getName() + " played " + super.getCardList().get(choice).getCardName());
                 played = true;
-            }
-            catch (UnavailableCardException e){
+            } catch (Exception e){
                 continue;
             }
-
         }
-        return (damage * super.getPower() * this.getPowerCoef());
+        damage *= super.getPower();
+        if (gen.nextBoolean()){
+            damage *= this.getPowerCoef();
+        }
+        return damage;
     }
 
     @Override
@@ -80,7 +89,7 @@ public class Boss extends Enemy implements Talkative{
         Random gen = new Random();
         if (!quoteList.isEmpty()) {
             int index = gen.nextInt(quoteList.size());
-            System.out.println(quoteList.get(index));
+            System.out.println(super.getName() + ": " + quoteList.get(index));
         }
     }
 }

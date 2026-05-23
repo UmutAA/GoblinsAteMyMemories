@@ -41,28 +41,36 @@ public class Player extends Character implements Talkative{
         while (!played){
             System.out.print("Choose your card: ");
             Scanner scanner = new Scanner(System.in);
-            int choice = scanner.nextInt();
             try {
+                int choice = scanner.nextInt();
                 damage = getCardList().get(choice).playCard();
+                if (getCardList().get(choice) instanceof SpellCard) {
+                    damage *= 3;
+                }
                 if (getCardList().get(choice) instanceof TroopCard) {
                     setCurrentCard(getCardList().get(choice));
                 } else if (getCardList().get(choice) instanceof SpellCard sc) {
                     this.getCardList().remove(choice);
-                    for (Card c :  this.getCardList()) {
+                    for (Card c : this.getCardList()) {
                         if (c.isAvailable() && c instanceof TroopCard tc) {
                             setCurrentCard(c);
+                            break;
                         }
                     }
                     setCurrentCard(getCardList().getFirst());
                 }
+                damage = getCardList().get(choice).playCard();
                 played = true;
+            } catch (InputMismatchException e){
+                System.out.println("Invalid Input");
             } catch (UnavailableCardException e) {
                 System.out.println("Can't play this card: " + e.getMessage());
                 System.out.println("Please play an available card!");
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("Can't play this card: Invalid card number!");
-                System.out.println("Please play an invalid card!");
+                System.out.println("Please play a valid card!");
             } catch (Exception e){
+                scanner.nextLine();
                 System.out.println("Can't play this card: " +  e.getMessage());
             }
         }
@@ -75,7 +83,6 @@ public class Player extends Character implements Talkative{
     }
 
     public void talk(){
-        Scanner input = new Scanner(System.in);
         if (emoteList.isEmpty()){
             System.out.println("There are no emotes to talk.");
             return;
@@ -86,18 +93,22 @@ public class Player extends Character implements Talkative{
         System.out.print("Please enter emote index: ");
         boolean talked = false;
         while (!talked){
+            Scanner input = new Scanner(System.in);
             try{
                 int choice = input.nextInt();
                 Emote emote = emoteList.get(choice);
                 System.out.println("\n" + this.getName() + ": " + emote.getEmoteMessage());
                 talked = true;
             } catch (InputMismatchException e) {
-                System.out.println("Invalid emote index:" + e.getMessage());
-                System.out.print("Please enter a valid emote index: ");
+                System.out.println("Invalid input:" + e.getMessage());
+                System.out.println("Please enter a valid emote index: ");
             }
             catch (IndexOutOfBoundsException e){
                 System.out.println("Invalid emote index:" + e.getMessage());
                 System.out.println("Please enter a valid emote index: ");
+            } catch (Exception e) {
+                input.nextLine();
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -108,7 +119,7 @@ public class Player extends Character implements Talkative{
                 c.buy(this);
                 this.getCardList().add(c);
                 this.setGem(this.getGem() - c.getPrice());
-                System.out.println("Card bought successfully");
+                System.out.println("Spell bought successfully");
             } catch (InsufficientMoneyException e) {
                 System.out.println("Insufficient Money. " + e.getMessage());
                 System.out.println("Purchase failed.");
@@ -175,12 +186,18 @@ public class Player extends Character implements Talkative{
                         break;
 
                     case 1:
+                        if (getCardList().isEmpty()){
+                            System.out.println("There are no cards to show.");
+                        }
                         for (Card card : getCardList()) {
                             System.out.println(card.toString());
                         }
                         break;
                     case 2:
-                        for (Emote emote: this.emoteList) {
+                        if (getEmoteList().isEmpty()){
+                            System.out.println("There are no emotes to show.");
+                        }
+                        for (Emote emote: getEmoteList()) {
                             System.out.println(emote.toString());
                         }
                         break;
@@ -189,7 +206,13 @@ public class Player extends Character implements Talkative{
                         break;
                 }
             } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please try again.");
+            } catch (IndexOutOfBoundsException e) {
                 System.out.println("Invalid choice. Please try again.");
+            } catch (NullPointerException e) {
+                System.out.println("No such emote exists!");
+            } catch (Exception e){
+                System.out.println(e.getMessage());
             }
         }
         System.out.println("======================");

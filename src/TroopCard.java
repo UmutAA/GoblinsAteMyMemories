@@ -22,7 +22,11 @@ public abstract class TroopCard extends Card{
     }
 
     public void setHealth(int health) {
-        this.health = health;
+        if (health <= 0){
+            this.health = 0;
+            this.setAvailable(false);
+        }
+        else this.health = health;
     }
 
     public int getSpeed() {
@@ -34,11 +38,12 @@ public abstract class TroopCard extends Card{
     }
 
     public void takeDamage(int damage){
-        health -= damage;
-        if (health <= 0) {
-            health = 0;
-            this.setAvailable(false);
+        int totalDamage = 0;
+        if (10 * damage / this.getSpeed() > 0){
+            totalDamage = 10 * damage / this.getSpeed();
         }
+        this.setHealth(this.getHealth() - totalDamage);
+        System.out.println(this.getCardName() + " took " + totalDamage + " damage: ");
     }
 
     public abstract boolean equals(Object obj);
