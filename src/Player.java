@@ -38,30 +38,39 @@ public class Player extends Character implements Talkative{
             System.out.printf("%d) %s\n", i, getCardList().get(i).toString());
         }
         boolean played = false;
-        while (!played){
+        while (!played) {
             System.out.print("Choose your card: ");
             Scanner scanner = new Scanner(System.in);
             try {
                 int choice = scanner.nextInt();
-                damage = getCardList().get(choice).playCard();
-                if (getCardList().get(choice) instanceof SpellCard) {
-                    damage *= 3;
-                }
-                if (getCardList().get(choice) instanceof TroopCard) {
-                    setCurrentCard(getCardList().get(choice));
-                } else if (getCardList().get(choice) instanceof SpellCard sc) {
+                Card chosen = getCardList().get(choice);
+
+                if (chosen instanceof TroopCard) {
+                    // Önce currentCard'ı güncelle, sonra oyna
+                    setCurrentCard(chosen);
+                    damage = chosen.playCard();
+
+                } else if (chosen instanceof SpellCard sc) {
+                    damage = chosen.playCard() * 3;
+                    // Spell'i listeden kaldır
                     this.getCardList().remove(choice);
+                    // Mevcut ilk TroopCard'ı currentCard yap
+                    boolean found = false;
                     for (Card c : this.getCardList()) {
-                        if (c.isAvailable() && c instanceof TroopCard tc) {
+                        if (c instanceof TroopCard tc && tc.isAvailable()) {
                             setCurrentCard(c);
-                            break;
+                            found = true;
+                            break; // ← ESKİDE BU YOKTU, hep son karta yazıyordu
                         }
                     }
-                    setCurrentCard(getCardList().getFirst());
+                    if (!found && !getCardList().isEmpty()) {
+                        setCurrentCard(getCardList().getFirst());
+                    }
                 }
-                damage = getCardList().get(choice).playCard();
+
                 played = true;
-            } catch (InputMismatchException e){
+
+            } catch (InputMismatchException e) {
                 System.out.println("Invalid Input");
             } catch (UnavailableCardException e) {
                 System.out.println("Can't play this card: " + e.getMessage());
@@ -69,9 +78,9 @@ public class Player extends Character implements Talkative{
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("Can't play this card: Invalid card number!");
                 System.out.println("Please play a valid card!");
-            } catch (Exception e){
+            } catch (Exception e) {
                 scanner.nextLine();
-                System.out.println("Can't play this card: " +  e.getMessage());
+                System.out.println("Can't play this card: " + e.getMessage());
             }
         }
         return (damage * this.getPower());

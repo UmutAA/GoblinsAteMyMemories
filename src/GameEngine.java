@@ -97,6 +97,7 @@ public class GameEngine {
             System.out.println("=============");
             System.out.println("  GAME OVER  ");
             System.out.println("=============");
+            System.out.println("Your stats: " + player.toString());
             return;
         }
         Scene.slowPrint(enemies.getFirst().getName() + ": I won't let you forget!");
@@ -114,6 +115,7 @@ public class GameEngine {
             System.out.println("=============");
             System.out.println("  GAME OVER  ");
             System.out.println("=============");
+            System.out.println("Your stats: " + player.toString());
             return;
         }
         Scene.slowPrint(enemies.get(1).getName() + ": Please, help me. I just want my father back :(.");
@@ -138,6 +140,7 @@ public class GameEngine {
             System.out.println("=============");
             System.out.println("  GAME OVER  ");
             System.out.println("=============");
+            System.out.println("Your stats: " + player.toString());
             return;
         }
         Scene.slowPrint(enemies.get(2).getName() + ": So... you are still alive.");
@@ -160,6 +163,7 @@ public class GameEngine {
             System.out.println("=============");
             System.out.println("  GAME OVER  ");
             System.out.println("=============");
+            System.out.println("Your stats: " + player.toString());
             return;
         }
         Scene.slowPrint(enemies.get(3).getName() + ": WAIT WAIT WAIT!");
@@ -184,6 +188,7 @@ public class GameEngine {
             System.out.println("=============");
             System.out.println("  GAME OVER  ");
             System.out.println("=============");
+            System.out.println("Your stats: " + player.toString());
             return;
         }
         Scene.slowPrint(enemies.get(4).getName() + ": Impossible...");
