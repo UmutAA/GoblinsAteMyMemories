@@ -58,7 +58,7 @@ public class GameEngine {
         Scene.slowPrint("----Chapter I: CARDS----\n");
         try{
             String story = Files.readString(Path.of("story.txt"));
-            Scene.slowPrint(story, 5);
+            Scene.slowPrint(story, 30);
         } catch (FileNotFoundException e){
             System.out.println("Story file not found." + e.getMessage());
         } catch (IOException e) {
