@@ -26,6 +26,10 @@ public class Thief extends Enemy{
         return stolenCards;
     }
 
+    /**
+     * Removes a random card from target'S deck and adds to Thief's deck.
+     * @param target Player from whom a card will be stolen
+     */
     public void steal(Player target){
         Random gen = new Random();
         while (true){
@@ -57,6 +61,10 @@ public class Thief extends Enemy{
 
     }
 
+    /**
+     * Gives the target stolen card back and stolen gems back.
+     * @param target Player who shall receive the reward.
+     */
     @Override
     public void getReward(Player target){
         if(super.getHealth() <= 0){
@@ -73,6 +81,10 @@ public class Thief extends Enemy{
         }
     }
 
+    /**
+     * Attack method to be used in the combat system. Plays the stolen card.
+     * @return Total damage output.
+     */
     @Override
     public int attack(){
         int damage = 0;

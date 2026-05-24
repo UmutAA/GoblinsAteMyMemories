@@ -25,6 +25,10 @@ public class Boss extends Enemy implements Talkative{
         return powerCoef;
     }
 
+    /**
+     * Gives the target a random cloneable card and random amount of gem
+     * @param target Player who shall receive the reward.
+     */
     public void getReward(Player target){
         if(super.getHealth() <= 0){
             Random gen = new Random();
@@ -43,6 +47,10 @@ public class Boss extends Enemy implements Talkative{
         }
     }
 
+    /**
+     * Attack method to be used in the combat system. Plays a random available card.
+     * @return Total damage output.
+     */
     @Override
     public int attack() {
         int damage = 0;
@@ -84,6 +92,9 @@ public class Boss extends Enemy implements Talkative{
                 ,super.getHealth(), super.getPower(), this.getHealthCoef(), this.getPowerCoef());
     }
 
+    /**
+     * Prints a random quote from quotelist.
+     */
     @Override
     public void talk(){
         Random gen = new Random();

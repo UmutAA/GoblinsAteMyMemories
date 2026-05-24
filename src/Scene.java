@@ -4,7 +4,17 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * A static class used for the scenes such as combat system and shop mechanism.
+ * Also contains print methods for a better atmosphere.
+ */
 public class Scene {
+
+    /**
+     * A helpful tool function for storytelling which slows the print operation.
+     * @param text: String to print.
+     * @param delayMs: delay parameter for slowing down printing operation.
+     */
     public static void slowPrint(String text, int delayMs) {
         for (char c : text.toCharArray()) {
             System.out.print(c);
@@ -14,13 +24,28 @@ public class Scene {
         System.out.println();
     }
 
+    /**
+     * Specialised version of slowPrint with given delay parameter.
+     * @param text String to print.
+     */
     public static void slowPrint(String text) { slowPrint(text, 10); }
 
+    /**
+     * A helpful tool function for better storytelling. This functions makes the program stop for given time period.
+     *  @param ms: pause time
+     */
     public static void pause(int ms) {
         try { TimeUnit.MILLISECONDS.sleep(ms); }
         catch (InterruptedException e) { Thread.currentThread().interrupt(); }
     }
 
+    /**
+     * Combat method made to handle the combat system.
+     * @param player Player
+     * @param enemy The enemy with whom player's having a combat
+     * @param input Scanner object(Given as parameter for better performance)
+     * @return Returns the result of the combat. If player wins, returns True, else returns False.
+     */
     // Combat Scene
     public static boolean combat(Player player, Enemy enemy, Scanner input){
         slowPrint("---ENCOUNTER---");
@@ -108,6 +133,10 @@ public class Scene {
         }
     }
 
+    /**
+     * Shop method made to handle the shop system.
+     * @param target Player interacting with the shop.
+     */
     // Shop Scene
     public static void shop(Player target){
         slowPrint("You saw a silhouette in the woods!");

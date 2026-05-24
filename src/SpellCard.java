@@ -32,6 +32,11 @@ public class SpellCard extends Card implements Buyable{
                 ,this.getPrice(), this.getDamage(), super.isAvailable());
     }
 
+    /**
+     * Calculates and returns a raw damage.
+     * @return Raw damage of the played card.
+     * @exception UnavailableCardException thrown if this card is unavailable
+     */
     @Override
     public int playCard() throws UnavailableCardException{
         if(!super.isAvailable()){
@@ -41,7 +46,10 @@ public class SpellCard extends Card implements Buyable{
             return this.getDamage();
         }
     }
-
+    /**
+     * Checks and confirms whether the player can buy this object. If so, adds this Spell Card to target's deck.
+     * @param target player to whom this object will be given
+     */
     @Override
     public void buy(Player target) throws InsufficientMoneyException, DuplicateException {
         if(target.getGem() < this.getPrice()){

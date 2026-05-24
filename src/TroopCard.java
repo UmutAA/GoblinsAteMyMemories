@@ -1,5 +1,8 @@
 import java.lang.Cloneable;
 
+/**
+ * Main card mechanism class for combat system.
+ */
 public abstract class TroopCard extends Card{
     private int health;
     private int maxHealth;
@@ -37,6 +40,10 @@ public abstract class TroopCard extends Card{
         this.speed = speed;
     }
 
+    /**
+     * Calculates and applies the damage to be taken.
+     * @param damage Raw damage input to be taken
+     */
     public void takeDamage(int damage){
         int totalDamage = 0;
         if (10 * damage / this.getSpeed() > 0){

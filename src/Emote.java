@@ -23,6 +23,10 @@ public class Emote implements Buyable{
         return String.format("[Emote: %s, Price: %d]", getEmoteMessage(), getPrice());
     }
 
+    /**
+     * Checks and confirms whether the player can buy this object. If so, adds this emote to target's inventory.
+     * @param target player to whom this object will be given
+     */
     @Override
     public void buy(Player target) throws InsufficientMoneyException, DuplicateException {
         if (target.getGem() < this.getPrice()) {

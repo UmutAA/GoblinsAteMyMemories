@@ -30,6 +30,10 @@ public class Figurant extends Enemy{
         }
     }
 
+    /**
+     * Attack method to be used in the combat system. Plays a random available card.
+     * @return Total damage output.
+     */
     @Override
     public int attack(){
         if(this.isAggressive()){

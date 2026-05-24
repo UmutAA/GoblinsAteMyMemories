@@ -15,6 +15,11 @@ public class MeleeCard extends TroopCard implements Cloneable<MeleeCard> {
         this.power = power;
     }
 
+    /**
+     * Calculates and returns a raw damage.
+     * @return Raw damage of the played card.
+     * @exception UnavailableCardException thrown if this card is unavailable
+     */
     @Override
     public int playCard() throws UnavailableCardException {
         if(!super.isAvailable()){

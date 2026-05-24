@@ -7,6 +7,9 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Main class in which game's running
+ */
 public class GameEngine {
     public static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
@@ -105,7 +108,7 @@ public class GameEngine {
 
         Scene.shop(player);
 
-        // ENCOUNTER 2: FIGURANT: RANDOM AGGRESSIVENESS
+        // ENCOUNTER 2: FIGURANT: NOT AGGRESSIVE
         Scene.slowPrint("----Chapter II: HE IS HARMLESS----\n");
         Scene.slowPrint("As you were still searching for your ***, you heard a voice coming from The Deep Woods");
         Scene.slowPrint("You decided to take a look into it, thus you followed the voice");

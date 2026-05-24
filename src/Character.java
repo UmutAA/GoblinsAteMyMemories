@@ -1,11 +1,15 @@
 import java.util.ArrayList;
 
+/**
+ * Main class for all the enemies and playable characters.
+ */
 public abstract class Character {
     private String name;
     private int health;
     private int power;
     private ArrayList<Card> cardList = new ArrayList<Card>();
     private Card currentCard;
+
 
     protected Character() {
         cardList = new ArrayList<Card>();
@@ -58,11 +62,18 @@ public abstract class Character {
     public void setPower(int power) {
         this.power = power;
     }
-
+    /**
+     * Calculates a damage output using played card's and object's data fields
+     * @return total damage output
+     */
     public abstract int attack();
 
     public abstract String toString();
 
+    /**
+     * Checks the deck for available troop cards.
+     * @return True: if found one. Else: Otherwise.
+     */
     public boolean checkDeck(){
         for (Card card : this.getCardList()){
             if (card instanceof TroopCard tc)
@@ -73,6 +84,11 @@ public abstract class Character {
         return false;
     }
 
+    /**
+     * Calculates and checks for exceptions and either played card or the character takes damage.
+     * If no available card exist character takes 1 damage. Otherwise available card takes the calculated damage.
+     * @param damage input damage to be taken
+     */
     public void takeDamage(int damage) {
         boolean damageTaken = false;
         if (!checkDeck()) {
@@ -119,6 +135,9 @@ public abstract class Character {
         }
     }
 
+    /**
+     * Sets all the troop cards as available
+     */
     public void resetDeck(){
         for (Card card : getCardList()) {
             if (card instanceof TroopCard tc) {
