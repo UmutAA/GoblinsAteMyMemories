@@ -136,7 +136,7 @@ public abstract class Character {
     }
 
     /**
-     * Sets all the troop cards as available
+     * Sets all the troop cards as available and restores health
      */
     public void resetDeck(){
         for (Card card : getCardList()) {

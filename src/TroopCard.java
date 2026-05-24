@@ -30,6 +30,9 @@ public abstract class TroopCard extends Card{
             this.setAvailable(false);
         }
         else this.health = health;
+        if (this.health > maxHealth){
+            this.maxHealth = this.health;
+        }
     }
 
     public int getSpeed() {

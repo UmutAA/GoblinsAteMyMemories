@@ -7,12 +7,12 @@ public class Boss extends Enemy implements Talkative{
     public Boss(){}
     public Boss(String name, int health, int power, ArrayList<Card> cardList, ArrayList<String> quoteList,
                 int healthCoef, int powerCoef){
-        super(name, health * healthCoef, power, cardList, quoteList);
+        super(name, health, power, cardList, quoteList);
         this.healthCoef = healthCoef;
         this.powerCoef = powerCoef;
         for (Card c: super.getCardList()){
             if (c instanceof TroopCard tc){
-                tc.setHealth(health * healthCoef);
+                tc.setHealth(tc.getHealth() * healthCoef);
             }
         }
     }
@@ -32,12 +32,11 @@ public class Boss extends Enemy implements Talkative{
     public void getReward(Player target){
         if(super.getHealth() <= 0){
             Random gen = new Random();
-            boolean condition = true;
-            while(condition){
-                Card tempCard = super.getCardList().get(gen.nextInt(super.getCardList().size()));
+            while(true){
+                Card tempCard = getCardList().get(gen.nextInt(super.getCardList().size()));
                 if(tempCard instanceof Cloneable<?>){
                     target.addCard(tempCard);
-                    condition = false;
+                    break;
                 }
                 else{
                     continue;

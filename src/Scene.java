@@ -28,7 +28,7 @@ public class Scene {
      * Specialised version of slowPrint with given delay parameter.
      * @param text String to print.
      */
-    public static void slowPrint(String text) { slowPrint(text, 50); }
+    public static void slowPrint(String text) { slowPrint(text, 10); }
 
     /**
      * A helpful tool function for better storytelling. This functions makes the program stop for given time period.
@@ -78,7 +78,7 @@ public class Scene {
                 while (!attacked) {
                     try {
                         System.out.println("\n=====================");
-                        System.out.println("  Round " + round + " | " + player.toString());
+                        System.out.println("  Round " + round + " | " + player.toString() + " vs " + enemy.toString());
                         System.out.println("  " + enemy.getName() + " HP: " + enemy.getHealth());
                         System.out.println("=====================");
                         System.out.println("(0) Attack (1) Emote");

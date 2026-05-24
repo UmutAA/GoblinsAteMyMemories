@@ -153,6 +153,7 @@ public class Player extends Character implements Talkative{
             }
 
             else{
+                this.getCardList().add(card);
                 System.out.println("You earned a new card: " + card.toString());
             }
         }

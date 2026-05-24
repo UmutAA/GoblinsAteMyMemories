@@ -1,4 +1,4 @@
-public class RangedCard extends TroopCard {
+public class RangedCard extends TroopCard implements Cloneable<RangedCard>{
     private int accuracy;
 
     public RangedCard(){}
@@ -57,7 +57,7 @@ public class RangedCard extends TroopCard {
     }
 
     @Override
-    public Card clone(){
+    public RangedCard clone(){
         try{
             RangedCard clone = (RangedCard) super.clone();
             clone.setAccuracy(this.getAccuracy());

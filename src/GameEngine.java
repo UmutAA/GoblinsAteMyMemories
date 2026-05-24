@@ -25,9 +25,9 @@ public class GameEngine {
         boss1_cards.add(new SpellCard("Guilt", 50, 4)); // 4 damage
 
         ArrayList<Card> boss2_cards = new ArrayList<Card>();
-        boss2_cards.add(new RangedCard("Sarah the Archer", 12, 10, 10)); // 10 base damage
-        boss2_cards.add(new RangedCard("Simon the Archer", 10, 12, 10));   // 12 base damage
-        boss2_cards.add(new SpellCard("Curse of the Eternal Lie",  70, 6)); // 6 damage
+        boss2_cards.add(new RangedCard("Sarah the Archer", 12, 9, 9)); // 8 base damage
+        boss2_cards.add(new RangedCard("Simon the Archer", 10, 10, 10));   // 10 base damage
+        boss2_cards.add(new SpellCard("Curse of the Eternal Lie",  70, 5)); // 5 damage
 
         ArrayList<String> quotes = new ArrayList<String>();
         quotes.add("Your bones will decorate my throne!");
@@ -58,7 +58,7 @@ public class GameEngine {
         Scene.slowPrint("----Chapter I: CARDS----\n");
         try{
             String story = Files.readString(Path.of("story.txt"));
-            Scene.slowPrint(story, 30);
+            Scene.slowPrint(story, 5);
         } catch (FileNotFoundException e){
             System.out.println("Story file not found." + e.getMessage());
         } catch (IOException e) {
@@ -84,8 +84,8 @@ public class GameEngine {
         ArrayList<Card> playerDeck = new ArrayList<Card>();
         playerDeck.add(new MeleeCard("Giant", 7, 4, 13)); // 5 base damage
         playerDeck.add(new RangedCard("Archer",3 , 6, 9)); // 5 base damage
-        Player player = new Player(playerName, 1, 1, playerDeck);
-        player.setGem(100);
+        Player player = new Player(playerName, 2, 2, playerDeck);
+        player.setGem(150);
 
         Scene.slowPrint("You quickly grab your old card deck:");
         for (Card c: player.getCardList()) {
@@ -130,6 +130,7 @@ public class GameEngine {
 
         Scene.shop(player);
 
+        int health = player.getHealth();
         // ENCOUNTER 3: MIDBOSS
         Scene.slowPrint("----Chapter III: Right Arm----\n");
         Scene.slowPrint("The deeper you walk into the woods, the quieter the world becomes.");
@@ -150,8 +151,10 @@ public class GameEngine {
         Scene.slowPrint(enemies.get(2).getName() + ": The Goblin Lord said your memories would never return.");
         Scene.slowPrint(enemies.get(2).getName() + ": But maybe... he was afraid of you.");
         Scene.slowPrint(enemies.get(2).getName() + " drops a strange card glowing with pale light.\n");
-        System.out.println("You obtained: " + player.getCardList().getLast().getCardName());
-        System.out.println(player.getCardList().getLast().toString());
+        player.setHealth(health);
+        Scene.slowPrint("Your stats are restored.");
+        System.out.println(player.toString());
+        player.resetDeck();
 
         Scene.shop(player);
 

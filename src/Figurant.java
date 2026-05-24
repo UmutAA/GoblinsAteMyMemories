@@ -18,7 +18,7 @@ public class Figurant extends Enemy{
     public void getReward(Player target){
         if(super.getHealth() <= 0){
             Random gen = new Random();
-            target.setGem(target.getGem() + gen.nextInt(21) + 10);
+            target.setGem(target.getGem() + gen.nextInt(21) + 30);
             if(gen.nextBoolean()){
                 target.setPower(target.getPower() + gen.nextInt(2) + 1);
             }

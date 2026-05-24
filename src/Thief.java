@@ -72,7 +72,6 @@ public class Thief extends Enemy{
 
             if (getGemsStolen() > 0){
                 target.setGem(target.getGem() + this.getGemsStolen());
-                target.getCardList().addAll(this.getStolenCards());
             }
 
             if(!getStolenCards().isEmpty()){
