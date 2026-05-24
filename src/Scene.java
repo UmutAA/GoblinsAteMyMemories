@@ -28,7 +28,7 @@ public class Scene {
      * Specialised version of slowPrint with given delay parameter.
      * @param text String to print.
      */
-    public static void slowPrint(String text) { slowPrint(text, 10); }
+    public static void slowPrint(String text) { slowPrint(text, 30); }
 
     /**
      * A helpful tool function for better storytelling. This functions makes the program stop for given time period.
