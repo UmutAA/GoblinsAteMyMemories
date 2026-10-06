@@ -40,3 +40,8 @@ The system architecture leverages fundamental software engineering principles an
    ```bash
    java GameEmgine
    ```
+
+---
+## License
+
+MIT
