@@ -11,7 +11,8 @@ import java.util.concurrent.TimeUnit;
 public class Scene {
 
     /**
-     * A helpful tool function for storytelling which slows the print operation.
+     * A helpful tool function for storytelling.
+     * Slows the print operation.
      * @param text: String to print.
      * @param delayMs: delay parameter for slowing down printing operation.
      */
