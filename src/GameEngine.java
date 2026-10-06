@@ -8,7 +8,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * Main class in which game's running
+ * Main class in which game is running
  */
 public class GameEngine {
     public static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
