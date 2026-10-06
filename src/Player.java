@@ -32,7 +32,7 @@ public class Player extends Character implements Talkative{
     }
 
     /**
-     * Attack method to be used in the combat system. Takes an input for card choice and plays the card
+     * Attack method which is used in the combat system. Takes an input for card choice and plays the card
      * @return Total damage output.
      */
     public int attack() {
